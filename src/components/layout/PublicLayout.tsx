@@ -119,13 +119,46 @@ const PublicLayout = () => {
     fetchContact();
   }, []);
 
-const navItems = [
-  { to: '/', icon: Home, label: 'Home' },
-  { to: '/projects', icon: Briefcase, label: 'Projects' },
-  { to: '/blogs', icon: BookOpen, label: 'Blogs' },
-  { to: '/resume', icon: FileText, label: 'Resume' },
-  { to: '/contact', icon: Contact, label: 'Contact' },
-];
+  // Track visits
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        // Check if already tracked today for this IP
+        const trackedKey = `visited_${new Date().toISOString().split('T')[0]}`;
+        if (sessionStorage.getItem(trackedKey)) {
+          return; // Already tracked today
+        }
+
+        // Fetch client IP address
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const { ip } = await ipResponse.json();
+
+        // Insert visit record
+        const { error } = await supabase.from('visits').insert({
+          ip_address: ip,
+          user_agent: navigator.userAgent,
+          page_visited: location.pathname,
+        });
+
+        if (!error) {
+          // Mark as tracked for today
+          sessionStorage.setItem(trackedKey, 'true');
+        }
+      } catch (error) {
+        console.error('Failed to track visit:', error);
+      }
+    };
+
+    trackVisit();
+  }, [location.pathname]);
+
+  const navItems = [
+    { to: '/portfolio/home', icon: Home, label: 'Home' },
+    { to: '/portfolio/projects', icon: Briefcase, label: 'Projects' },
+    { to: '/portfolio/blogs', icon: BookOpen, label: 'Blogs' },
+    { to: '/portfolio/resume', icon: FileText, label: 'Resume' },
+    { to: '/portfolio/contact', icon: Contact, label: 'Contact' },
+  ];
 
   const activeLinkStyle = "flex items-center gap-3 px-4 py-3 bg-slate-800/50 border border-slate-700 text-green-500 rounded-xl transition-all duration-200 shadow-lg shadow-green-500/5 cursor-pointer";
   const inactiveLinkStyle = "flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-slate-800/30 hover:text-slate-200 rounded-xl transition-all duration-200 group cursor-pointer";
