@@ -152,12 +152,13 @@ const PublicLayout = () => {
     trackVisit();
   }, [location.pathname]);
 
+  // Fixed navigation paths - removed '/portfolio' prefix to match your routing
   const navItems = [
-    { to: '/portfolio/home', icon: Home, label: 'Home' },
-    { to: '/portfolio/projects', icon: Briefcase, label: 'Projects' },
-    { to: '/portfolio/blogs', icon: BookOpen, label: 'Blogs' },
-    { to: '/portfolio/resume', icon: FileText, label: 'Resume' },
-    { to: '/portfolio/contact', icon: Contact, label: 'Contact' },
+    { to: '/', icon: Home, label: 'Home' },
+    { to: '/projects', icon: Briefcase, label: 'Projects' },
+    { to: '/blogs', icon: BookOpen, label: 'Blogs' },
+    { to: '/resume', icon: FileText, label: 'Resume' },
+    { to: '/contact', icon: Contact, label: 'Contact' },
   ];
 
   const activeLinkStyle = "flex items-center gap-3 px-4 py-3 bg-slate-800/50 border border-slate-700 text-green-500 rounded-xl transition-all duration-200 shadow-lg shadow-green-500/5 cursor-pointer";
