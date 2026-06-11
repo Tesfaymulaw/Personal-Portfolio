@@ -181,7 +181,7 @@ const PublicResume = () => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${profile.first_name}_${profile.last_name}_CV.pdf`; // or extract filename from URL
+      link.download = `${profile.first_name}_${profile.last_name}_CV.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -555,7 +555,8 @@ const PublicResume = () => {
                 <CardContent className="p-6 space-y-5">
                   {lang.language_proficiencies?.map((skill, sIdx) => (
                     <div key={sIdx} className="space-y-2">
-                      <div className="flex justify-end text-sm">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-medium">{skill.name}</span>
                         <span className="text-white font-bold">{skill.level}%</span>
                       </div>
                       <Progress 
